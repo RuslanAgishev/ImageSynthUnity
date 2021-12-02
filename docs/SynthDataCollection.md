@@ -29,22 +29,22 @@ The repository allows to capture image depth, segmentation, optical flow, etc as
 
 ### Installation
 Please follow installation instruction, provided at
-[INSTALL.md](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/INSTALL.md).
+[INSTALL.md](INSTALL.md).
 
 ### Collect Synthetic Data ###
 In order to generate the data described above the
-[ImageSynthesis.cs](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/ImageSynthesis/ImageSynthesis.cs)
+[ImageSynthesis.cs](../Assets/ImageSynthesis/ImageSynthesis.cs)
 script is attached to virtual camera in a Unity Scene.
-The [DataRecorder.cs](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/Scripts/DataRecorder.cs)
+The [DataRecorder.cs](../Assets/Scripts/DataRecorder.cs)
 script is responsible for capturing the frames and saving data on disk.
 
 ### Train a CNN on synthetic data ###
 An example of how to train a CNN for semantic segmentation based on the collected synthetic data is provided,
-[TrainOnSynthDataFastai.ipynb](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/tools/TrainOnSynthDataFastai.ipynb).
+[TrainOnSynthDataFastai.ipynb](../tools/TrainOnSynthDataFastai.ipynb).
 For more information check the [fastai tutorial](https://course.fast.ai/videos/?lesson=3).
 
 Here is an example on how to convert collected synthetic semantic segmentation data to a specific dataset format,
-[TransformMasksToMSeg.ipynb](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/tools/TransformMasksToMSeg.ipynb).
+[TransformMasksToMSeg.ipynb](../tools/TransformMasksToMSeg.ipynb).
 In this case objects labels in segmentation masks are transformed to match the
 [MSeg](https://github.com/mseg-dataset/mseg-semantic)
 dataset format.
@@ -52,7 +52,7 @@ dataset format.
 ### Localization and Odometry data logging ###
 <img src="../figures/recorded_trajectory.png" width="400"/>
 
-[DataRecorder.cs](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/Scripts/DataRecorder.cs)
+[DataRecorder.cs](../Assets/Scripts/DataRecorder.cs)
 script allows you also to record your player or virtual camera localization and odometry information
 synchronized with the frames data, including:
 
@@ -77,35 +77,35 @@ An example of recorded data could look in the following way:
 }
 ```
 
-The file [odometry.json](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/tools/odometry.json)
+The file [odometry.json](../tools/odometry.json)
 recorded with the captured frames if Save Frames option of the
-[DataRecorder.cs](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/Scripts/DataRecorder.cs)
+[DataRecorder.cs](../Assets/Scripts/DataRecorder.cs)
 is enabled.
 
 Have a look at the
-[parse_odometry_and_detections.ipynb](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/tools/parse_odometry_and_detections.ipynb)
+[parse_odometry_and_detections.ipynb](../tools/parse_odometry_and_detections.ipynb)
 example to see how to parse the recorded data.
 
 ### 3D Object Detection ###
-<img src="figures/bbox.png"/>
+<img src="../figures/bbox.png"/>
 
 Generation and drawing bounding boxes around game objects with the help of the
 [BoundBoxes](https://assetstore.unity.com/packages/tools/utilities/boundboxes-10962)
 Unity asset.
 
 In order to get it work, the
-[DrawLines.cs](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/DimBoxes/BoundBox/DrawLines.cs)
+[DrawLines.cs](../Assets/DimBoxes/BoundBox/DrawLines.cs)
 script is attached to camera for bound boxes visualization in Scene and Game views.
 Another script,
-[BoundBox.cs](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/DimBoxes/BoundBox/BoundBox.cs)
+[BoundBox.cs](../Assets/DimBoxes/BoundBox/BoundBox.cs)
 should be added to each game object (or a group of game objects, like the
 [Car asset](https://assetstore.unity.com/packages/3d/vehicles/low-poly-car-149312))
 you want to detect.
 You can log information about detected objects, like position and orientation relative to camera and
 bbox size, using
-[calculateBoundsRelativeToCamera](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/DimBoxes/BoundBox/BoundBox.cs#L122) function.
+[calculateBoundsRelativeToCamera](../Assets/DimBoxes/BoundBox/BoundBox.cs#L122) function.
 
-[DataRecorder.cs](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/Scripts/DataRecorder.cs)
+[DataRecorder.cs](../Assets/Scripts/DataRecorder.cs)
 also allows to record dynamic objects (cars and pedestrians) bounding box data.
 Example of a data frame captured at one time moment could look similar to the following:
 
@@ -124,4 +124,4 @@ and orientations are represented by `poses_m` (in meters) and `orients_quat` (as
 Bounding boxes sizes are given in `bbox_sizes_m` attribute (also in meters).
 
 Have a look at an example on how to do detections data postprocessing,
-[parse_odometry_and_detections.ipynb](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/tools/parse_odometry_and_detections.ipynb).
+[parse_odometry_and_detections.ipynb](../tools/parse_odometry_and_detections.ipynb).
