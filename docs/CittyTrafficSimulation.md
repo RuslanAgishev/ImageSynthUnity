@@ -18,12 +18,12 @@ Unity asset.
 ## Data-collection with a fleet of dynamic objects
 In order to collect even more data with a group of dynamic agents, simply
 add a camera to each of them with the following scripts attached to the camera:
-[ImageSynthesis.cs](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/ImageSynthesis/ImageSynthesis.cs)
-and [DataRecorder.cs](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/Scripts/DataRecorder.cs)
+[ImageSynthesis.cs](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/ImageSynthesis/ImageSynthesis.cs)
+and [DataRecorder.cs](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/Assets/Scripts/DataRecorder.cs)
 scripts.
 As a result, for each game object there will be generated separate odometry and detection `json`-files
 as well as images with a specific tag.
 
 For more details, ave a look at the parser of a dataset collected from 2 individual cars,
-[parse_multicam_data.ipynb](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/master/tools/parse_multicam_data.ipynb).
+[parse_multicam_data.ipynb](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/tools/parse_multicam_data.ipynb).
 
