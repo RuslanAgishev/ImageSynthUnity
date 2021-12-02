@@ -15,15 +15,15 @@ Currently, we support the two urban scenes:
 
 ## Content
 
-- [Installation](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/INSTALL.md)
+- [Installation](docs/INSTALL.md)
 
-- [Synthetic data collection](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/SynthDataCollection.md):
-    1. [image segmentation, depth estimation, normals and optical flow](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/SynthDataCollection.md#what-does-it-do)
+- [Synthetic data collection](docs/SynthDataCollection.md):
+    1. [image segmentation, depth estimation, normals and optical flow](docs/SynthDataCollection.md#what-does-it-do)
        with [ml-imagesynthesis](https://bitbucket.org/Unity-Technologies/ml-imagesynthesis/src/master/).
-    2. [localization and odometry](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/SynthDataCollection.md#localization-and-odometry-data-logging).
-    3. [3D-bounding boxes](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/SynthDataCollection.md#3d-object-detection).
+    2. [localization and odometry](docs/SynthDataCollection.md#localization-and-odometry-data-logging).
+    3. [3D-bounding boxes](docs/SynthDataCollection.md#3d-object-detection).
 
-- [City traffic simulation](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/CittyTrafficSimulation.md):
+- [City traffic simulation](docs/CittyTrafficSimulation.md):
     includes animated pedestrians moving on sidewalks and pedestrian crossings as well as cars, following predefined
     routes on the roads.
 
