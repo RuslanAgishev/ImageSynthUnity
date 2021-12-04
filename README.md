@@ -9,7 +9,7 @@ integrated into the urban environment based on the
 ## Installation
 
 Please, follow installation instructions in
-[INSTALL.md](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/planning/docs/INSTALL.md).
+[INSTALL.md](docs/INSTALL.md).
 
 ## ROS
 
@@ -29,5 +29,5 @@ Launch `unity_ros` nodelet:
 roslaunch unity_ros unity_ros.launch
 ```
 
-Open [Windridge City Demo Scene](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/planning/Assets/Scenes/Windridge%20City%20Demo%20Scene.unity)
+Open [Windridge City Demo Scene](https://github.com/RuslanAgishev/ImageSynthUnity/blob/f95d701a7f73a3def036f0e7a725ff14d3e947b7/Assets/Scenes/Windridge%20City%20Demo%20Scene.unity)
 in Unity and enter the Game mode (press play).
