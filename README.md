@@ -1,36 +1,33 @@
-# Urban Environment Simulation
+# Robot simulation in city environment
 
-This repository contains city environment simulation with [Unity3D](https://unity.com/).
+<img src="./demos/robot_model.gif"/> <img src="./demos/robot_model_ros.gif"/>
 
-Currently, we support the two urban scenes:
-- [small](https://gitlab.com/RuslanAgishev/ImageSynthUnity):
-    for synthetic data collection and with integrated robot model and
-    [ROS](https://www.ros.org/) bridge,
-    based on [WindridgeCity](https://assetstore.unity.com/packages/3d/environments/roadways/windridge-city-132222);
-- [big](https://gitlab.com/vedu/cscape):
-    for synthetic data collection with high definition renderring and day-night change,
-    based on [CScape](https://assetstore.unity.com/packages/tools/modeling/cscape-city-system-86716).
+[Unit04](https://github.com/Field-Robotics-Japan/unit04_unity) robot model is
+integrated into the urban environment based on the
+[vtc_unity](https://github.com/Field-Robotics-Japan/vtc_unity) project.
 
-<img src="figures/pedestrians.gif"> <img src="figures/city_traffic.gif">
+## Installation
 
-## Content
+Please, follow installation instructions in
+[INSTALL.md](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/planning/docs/INSTALL.md).
 
-- [Installation](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/INSTALL.md)
+## ROS
 
-- [Synthetic data collection](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/SynthDataCollection.md):
-    1. [image segmentation, depth estimation, normals and optical flow](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/SynthDataCollection.md#what-does-it-do)
-       with [ml-imagesynthesis](https://bitbucket.org/Unity-Technologies/ml-imagesynthesis/src/master/).
-    2. [localization and odometry](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/SynthDataCollection.md#localization-and-odometry-data-logging).
-    3. [3D-bounding boxes](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/SynthDataCollection.md#3d-object-detection).
+Unity-ROS communication is established using the [ros-sharp](https://github.com/siemens/ros-sharp)
+package.
 
-- [City traffic simulation](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/master/docs/CittyTrafficSimulation.md):
-    includes animated pedestrians moving on sidewalks and pedestrian crossings as well as cars, following predefined
-    routes on the roads.
+Build the packages in `ros_ws`:
+```bash
+cd ./ros_ws
+rosdep install --from-paths src --ignore-src -r -y
+catkin build
+```
 
-- [ROS-based mobile robot simulation](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/planning/README.md) with the following sensors:
-    1. lidar Velodyne VLP-16,
-    2. frontal RGB-camera,
-    3. IMU,
-    4. semantic local map which is rendered as a video stream from a virtual camera above the robot.
+Launch `unity_ros` nodelet:
 
-<img src="figures/robot_model.png"/>
+```bash
+roslaunch unity_ros unity_ros.launch
+```
+
+Open [Windridge City Demo Scene](https://gitlab.com/RuslanAgishev/ImageSynthUnity/-/blob/planning/Assets/Scenes/Windridge%20City%20Demo%20Scene.unity)
+in Unity and enter the Game mode (press play).

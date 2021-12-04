@@ -28,13 +28,19 @@ namespace RosSharp.RosBridgeClient
         };
 
         public Shader uberReplacementShader;
+        public Shader opticalFlowShader;
+
+        public float opticalFlowSensitivity = 1.0f;
+
+        // cached materials
+        private Material opticalFlowMaterial;
         // whether semantic segmentation is labeled as grayscale image
 	    public bool grayscaleSegmentation = false;
+        public int specificPass = 0;
 
-        public Camera ImageCamera;
-        public string FrameId = "Camera";
-        public int resolutionWidth = 640;
-        public int resolutionHeight = 480;
+        public string FrameId = "local_map_camera";
+        public int resolutionWidth = 512;
+        public int resolutionHeight = 512;
         [Range(0, 100)]
         public int qualityLevel = 50;
 
@@ -49,7 +55,7 @@ namespace RosSharp.RosBridgeClient
                 uberReplacementShader = Shader.Find("Hidden/UberReplacement");
 
             // use real camera to capture final image
-            capturePasses[0].camera = this.ImageCamera;
+            capturePasses[0].camera = GetComponent<Camera>();
             for (int q = 1; q < capturePasses.Length; q++)
                 capturePasses[q].camera = CreateHiddenCamera (capturePasses[q].name);
 
@@ -64,7 +70,7 @@ namespace RosSharp.RosBridgeClient
 
         private void UpdateImage(Camera _camera)
         {
-            if (texture2D != null && _camera == capturePasses[3].camera)
+            if (texture2D != null && _camera == capturePasses[specificPass].camera)
                 UpdateMessage();
         }
 
@@ -72,7 +78,7 @@ namespace RosSharp.RosBridgeClient
         {
             texture2D = new Texture2D(resolutionWidth, resolutionHeight, TextureFormat.RGB24, false);
             rect = new Rect(0, 0, resolutionWidth, resolutionHeight);
-            capturePasses[3].camera.targetTexture = new RenderTexture(resolutionWidth, resolutionHeight, 24);
+            capturePasses[specificPass].camera.targetTexture = new RenderTexture(resolutionWidth, resolutionHeight, 24);
         }
 
         private void InitializeMessage()
@@ -84,6 +90,11 @@ namespace RosSharp.RosBridgeClient
 
         private void UpdateMessage()
         {
+            message.header.Update();
+            texture2D.ReadPixels(rect, 0, 0);
+            message.data = texture2D.EncodeToJPG(qualityLevel);
+            Publish(message);
+
             #if UNITY_EDITOR
             if (DetectPotentialSceneChangeInEditor())
                 OnSceneChange();
@@ -91,11 +102,6 @@ namespace RosSharp.RosBridgeClient
 
             // @TODO: detect if camera properties actually changed
             OnCameraChange();
-
-            message.header.Update();
-            texture2D.ReadPixels(rect, 0, 0);
-            message.data = texture2D.EncodeToJPG(qualityLevel);
-            Publish(message);
         }
 
         private Camera CreateHiddenCamera(string name)
@@ -143,7 +149,7 @@ namespace RosSharp.RosBridgeClient
         public void OnCameraChange()
         {
             int targetDisplay = 1;
-            var mainCamera = this.ImageCamera;
+            var mainCamera = GetComponent<Camera>();
             foreach (var pass in capturePasses)
             {
                 if (pass.camera == mainCamera)
@@ -159,12 +165,17 @@ namespace RosSharp.RosBridgeClient
                 pass.camera.targetDisplay = targetDisplay++;
             }
 
+            // cache materials and setup material properties
+            if (!opticalFlowMaterial || opticalFlowMaterial.shader != opticalFlowShader)
+                opticalFlowMaterial = new Material(opticalFlowShader);
+            opticalFlowMaterial.SetFloat("_Sensitivity", opticalFlowSensitivity);
+
             // setup command buffers and replacement shaders
-            // SetupCameraWithReplacementShader(capturePasses[1].camera, uberReplacementShader, ReplacelementModes.ObjectId);
+            SetupCameraWithReplacementShader(capturePasses[1].camera, uberReplacementShader, ReplacelementModes.ObjectId);
             SetupCameraWithReplacementShader(capturePasses[2].camera, uberReplacementShader, ReplacelementModes.CatergoryId);
             SetupCameraWithReplacementShader(capturePasses[3].camera, uberReplacementShader, ReplacelementModes.DepthCompressed, Color.white);
-            // SetupCameraWithReplacementShader(capturePasses[4].camera, uberReplacementShader, ReplacelementModes.Normals);
-            // SetupCameraWithPostShader(capturePasses[5].camera, opticalFlowMaterial, DepthTextureMode.Depth | DepthTextureMode.MotionVectors);
+            SetupCameraWithReplacementShader(capturePasses[4].camera, uberReplacementShader, ReplacelementModes.Normals);
+            SetupCameraWithPostShader(capturePasses[5].camera, opticalFlowMaterial, DepthTextureMode.Depth | DepthTextureMode.MotionVectors);
         }
 
         public void OnSceneChange()
@@ -177,7 +188,7 @@ namespace RosSharp.RosBridgeClient
                 var layer = r.gameObject.layer;
                 var tag = r.gameObject.tag;
 
-                // mpb.SetColor("_ObjectColor", ColorEncoding.EncodeIDAsColor(id));
+                mpb.SetColor("_ObjectColor", ColorEncoding.EncodeIDAsColor(id));
                 mpb.SetColor("_CategoryColor", ColorEncoding.EncodeLayerAsColor(layer, grayscaleSegmentation));
                 r.SetPropertyBlock(mpb);
             }

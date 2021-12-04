@@ -1,7 +1,3 @@
-### Requirements ###
-* Tested with Unity 2019.4.18f1 (LTS)
-* Should work on any OS officially supported by Unity
-
 ### 1．Installation of Unity 2019.4.18f1 (LTS)
 First, install UnityHub with following links.
 - Windows, Mac : https://unity3d.com/jp/get-unity/download
@@ -31,7 +27,7 @@ You have `.exe` file from above link. Just run them.
    If you need any other version, the procedure is same.
    After above commands, the UnityHub will start to install desired version's Unity Editor!
 
-### 4. Open ImageSynthUnity project
+### 4.Open ImageSynthUnity project
 Finally, please open `ImageSynthUnity` package from UnityHub. (It takes more than 5 minuites at the first time, in the case)
 
 ### 5. Select the Scene file

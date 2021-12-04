@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<launch>
+	<arg name="rvizconfig" default="$(find unity_ros)/rviz/config.rviz"/>
+	<arg name="model" default="$(find unit04_description)/urdf/robot_description.urdf"/>
+	<arg name="rviz" default="true"/>
+	<arg name="debug" default="false"/>
+	<arg name="depth_proc" default="false"/>
+	<arg name="cmd_vel_topic" default="/cmd_vel"/>
+	<arg name="VLP16_calibration" default="$(find velodyne_pointcloud)/params/VLP16db.yaml"/>
+
+	<include file="$(find file_server)/launch/ros_sharp_communication.launch">
+		<param name="port" value="9090"/>
+	</include>
+
+	<!-- robot state publisher -->
+	<param name="robot_description" command="$(find xacro)/xacro $(arg model)"/>
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+	<node name="pose_to_tf_publisher" pkg="unity_ros" type="pose_to_tf_publisher.py" output="screen"/>
+
+	<!-- img messages converter -->
+<!-- 	<node name="img_msgs_converter" pkg="unity_ros" type="img_msgs_converter.py" output="screen"/> -->
+
+	<!-- add static tf transform for local_map_camera frame (relative to base_link) -->
+	<node pkg="tf" type="static_transform_publisher" name="local_map_cam_link_br" args="0 0 4.79684 0.7071067818211393 -0.7071067805519557 0 0 base_link local_map_camera 100"/>
+
+	<!-- depth processing to obtain realsense pointcloud data -->
+<!--   	<include if="$(arg depth_proc)" file="$(find unity_ros)/launch/depth_proc.launch"/> -->
+
+  	<!-- add static tf transform for velodyne frame (relative to gps_link) -->
+	<node pkg="tf" type="static_transform_publisher" name="velodyne_link_br" args="0 0 0 0 0 0 1 gps_link velodyne_link 100"/>
+	<!-- velodyne pointcloud -->
+    <node name="velodyne_pointcloud_converter" pkg="velodyne_pointcloud" type="transform_node" output="screen">
+    	<param name="calibration" value="$(arg VLP16_calibration)"/>
+    	<param name="model" value="VLP16"/>
+    </node>
+
+  	<!-- robot keyboard teleoperation -->
+    <node name="teleop_twist_keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen">
+    	<param name="cmd_vel" value="$(arg cmd_vel_topic)"/>
+    </node>
+
+	<node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true"/>
+	<node if="$(arg debug)" name="rqt_graph" pkg="rqt_graph" type="rqt_graph"/>
+	<node if="$(arg debug)" name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree"/>
+</launch>
