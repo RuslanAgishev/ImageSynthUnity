@@ -27,7 +27,7 @@ Currently, we support the two urban scenes:
     includes animated pedestrians moving on sidewalks and pedestrian crossings as well as cars, following predefined
     routes on the roads.
 
-- [ROS-based mobile robot simulation](https://github.com/RuslanAgishev/ImageSynthUnity/-/blob/planning/README.md) with the following sensors:
+- [ROS-based mobile robot simulation](https://github.com/RuslanAgishev/ImageSynthUnity/blob/planning/README.md) with the following sensors:
     1. lidar Velodyne VLP-16,
     2. frontal RGB-camera,
     3. IMU,
